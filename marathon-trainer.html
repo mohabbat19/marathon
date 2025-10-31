@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Marathon Trainer">
+    <meta name="theme-color" content="#2E5090">
+    <title>Marathon Training App</title>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTWFyYXRob24gVHJhaW5pbmcgQXBwIiwic2hvcnRfbmFtZSI6Ik1hcmF0aG9uIiwiZGVzY3JpcHRpb24iOiJZb3VyIHBlcnNvbmFsIG1hcmF0aG9uIHRyYWluaW5nIGNvbXBhbmlvbiIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjZmZmZmZmIiwidGhlbWVfY29sb3IiOiIjMkU1MDkwIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbCwlM0NzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgMTAwIDEwMCclM0UlM0NyZWN0IGZpbGw9JyUyMzJFNTA5MCcgd2lkdGg9JzEwMCcgaGVpZ2h0PScxMDAnLyUzRSUzQ3RleHQgeD0nNTAlMjUnIHk9JzUwJTI1JyBmb250LXNpemU9JzUwJyBmaWxsPSclMjNmZmZmZmYnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGR5PScuMzVlbSclM0UlRjAlOUYlOEYlODMlM0MvdGV4dCUzRSUzQy9zdmclM0UiLCJzaXplcyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2Uvc3ZnK3htbCJ9LHsic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMDAgMTAwJyUzRSUzQ3JlY3QgZmlsbD0nJTIzMkU1MDkwJyB3aWR0aD0nMTAwJyBoZWlnaHQ9JzEwMCcvJTNFJTNDdGV4dCB4PSc1MCUyNScgeT0nNTAlMjUnIGZvbnQtc2l6ZT0nNTAnIGZpbGw9JyUyM2ZmZmZmZicgdGV4dC1hbmNob3I9J21pZGRsZScgZHk9Jy4zNWVtJyUzRSVGMCU5RiU4RiU4MyUzQy90ZXh0JTNFJTNDL3N2ZyUzRSIsInNpemVzIjoiNTEyeDUxMiIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dfQ==">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%232E5090' width='100' height='100'/%3E%3Ctext x='50%25' y='50%25' font-size='50' fill='%23ffffff' text-anchor='middle' dy='.35em'%3E🏃%3C/text%3E%3C/svg%3E">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-bottom: 80px;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2E5090 0%, #4472C4 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header .week-info {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2E5090;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .input-range {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            outline: none;
+            -webkit-appearance: none;
+            background: #e0e0e0;
+        }
+
+        .input-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #2E5090;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .input-range::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #2E5090;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .range-value {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .current-value {
+            font-weight: 600;
+            color: #2E5090;
+            font-size: 18px;
+        }
+
+        .input-text {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .input-text:focus {
+            outline: none;
+            border-color: #2E5090;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2E5090 0%, #4472C4 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 80, 144, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            margin-top: 10px;
+        }
+
+        .workout-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .workout-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .workout-details {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .workout-tips {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .adjustment-badge {
+            display: inline-block;
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2E5090;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2E5090 0%, #4472C4 100%);
+            transition: width 0.5s ease;
+        }
+
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #666;
+            font-size: 12px;
+            border: none;
+            background: none;
+        }
+
+        .nav-item.active {
+            color: #2E5090;
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-top: 15px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f5;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .calendar-day.completed {
+            background: linear-gradient(135deg, #2E5090 0%, #4472C4 100%);
+            color: white;
+        }
+
+        .calendar-day.today {
+            border: 2px solid #2E5090;
+        }
+
+        .calendar-day.rest {
+            background: #e8f5e9;
+        }
+
+        .phase-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background: linear-gradient(135deg, #FFA500 0%, #FF6347 100%);
+            color: white;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            color: #856404;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #17a2b8;
+            color: #0c5460;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .emoji {
+            font-size: 24px;
+        }
+
+        .log-entry {
+            background: #f8f9fa;
+            border-left: 4px solid #2E5090;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .log-date {
+            font-weight: 600;
+            color: #2E5090;
+            margin-bottom: 5px;
+        }
+
+        .log-details {
+            font-size: 14px;
+            color: #666;
+        }
+
+        @media (max-width: 640px) {
+            .app-container {
+                border-radius: 0;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        // Training program data
+        const TRAINING_PROGRAM = {
+            phases: [
+                {
+                    name: "Base Building",
+                    startWeek: 1,
+                    endWeek: 13,
+                    weeks: [
+                        { week: 1, longRun: 5, totalMiles: 15 },
+                        { week: 2, longRun: 6, totalMiles: 17 },
+                        { week: 3, longRun: 7, totalMiles: 19 },
+                        { week: 4, longRun: 6, totalMiles: 17, recovery: true },
+                        { week: 5, longRun: 8, totalMiles: 20 },
+                        { week: 6, longRun: 9, totalMiles: 22 },
+                        { week: 7, longRun: 10, totalMiles: 24 },
+                        { week: 8, longRun: 8, totalMiles: 22, recovery: true },
+                        { week: 9, longRun: 11, totalMiles: 25 },
+                        { week: 10, longRun: 12, totalMiles: 27 },
+                        { week: 11, longRun: 10, totalMiles: 25, recovery: true },
+                        { week: 12, longRun: 12, totalMiles: 28 },
+                        { week: 13, longRun: 10, totalMiles: 26, recovery: true }
+                    ]
+                },
+                {
+                    name: "Endurance Building",
+                    startWeek: 14,
+                    endWeek: 26,
+                    weeks: [
+                        { week: 14, longRun: 13, totalMiles: 30 },
+                        { week: 15, longRun: 14, totalMiles: 32 },
+                        { week: 16, longRun: 15, totalMiles: 35 },
+                        { week: 17, longRun: 12, totalMiles: 30, recovery: true },
+                        { week: 18, longRun: 16, totalMiles: 38 },
+                        { week: 19, longRun: 17, totalMiles: 40 },
+                        { week: 20, longRun: 18, totalMiles: 42 },
+                        { week: 21, longRun: 14, totalMiles: 35, recovery: true },
+                        { week: 22, longRun: 19, totalMiles: 44 },
+                        { week: 23, longRun: 20, totalMiles: 45 },
+                        { week: 24, longRun: 16, totalMiles: 38, recovery: true },
+                        { week: 25, longRun: 20, totalMiles: 45 },
+                        { week: 26, longRun: 15, totalMiles: 35, recovery: true }
+                    ]
+                },
+                {
+                    name: "Speed and Strength",
+                    startWeek: 27,
+                    endWeek: 39,
+                    weeks: [
+                        { week: 27, longRun: 18, totalMiles: 42 },
+                        { week: 28, longRun: 19, totalMiles: 45 },
+                        { week: 29, longRun: 20, totalMiles: 48 },
+                        { week: 30, longRun: 16, totalMiles: 40, recovery: true },
+                        { week: 31, longRun: 20, totalMiles: 48 },
+                        { week: 32, longRun: 20, totalMiles: 50 },
+                        { week: 33, longRun: 18, totalMiles: 45, recovery: true },
+                        { week: 34, longRun: 20, totalMiles: 48 },
+                        { week: 35, longRun: 20, totalMiles: 50 },
+                        { week: 36, longRun: 18, totalMiles: 45, recovery: true },
+                        { week: 37, longRun: 20, totalMiles: 48 },
+                        { week: 38, longRun: 20, totalMiles: 48 },
+                        { week: 39, longRun: 16, totalMiles: 40, recovery: true }
+                    ]
+                },
+                {
+                    name: "Taper and Race",
+                    startWeek: 40,
+                    endWeek: 52,
+                    weeks: [
+                        { week: 40, longRun: 20, totalMiles: 45 },
+                        { week: 41, longRun: 22, totalMiles: 48 },
+                        { week: 42, longRun: 20, totalMiles: 45 },
+                        { week: 43, longRun: 18, totalMiles: 42 },
+                        { week: 44, longRun: 16, totalMiles: 38 },
+                        { week: 45, longRun: 14, totalMiles: 35 },
+                        { week: 46, longRun: 12, totalMiles: 32 },
+                        { week: 47, longRun: 10, totalMiles: 28 },
+                        { week: 48, longRun: 12, totalMiles: 30 },
+                        { week: 49, longRun: 8, totalMiles: 25 },
+                        { week: 50, longRun: 8, totalMiles: 22 },
+                        { week: 51, longRun: 4, totalMiles: 18 },
+                        { week: 52, longRun: 26.2, totalMiles: 26.2, race: true }
+                    ]
+                }
+            ]
+        };
+
+        const WORKOUT_TEMPLATES = {
+            baseBuilding: {
+                monday: { type: "easy", description: "Easy Run at conversational pace" },
+                tuesday: { type: "cross", description: "Cross-Training + Strength Training" },
+                wednesday: { type: "easy", description: "Easy Run at conversational pace" },
+                thursday: { type: "rest", description: "REST DAY or light cross-training" },
+                friday: { type: "easy", description: "Easy Run at conversational pace" },
+                saturday: { type: "rest", description: "REST DAY" },
+                sunday: { type: "long", description: "Long Run" }
+            },
+            enduranceBuilding: {
+                monday: { type: "easy", description: "Easy Run at conversational pace" },
+                tuesday: { type: "moderate", description: "Moderate Run at steady pace" },
+                wednesday: { type: "cross", description: "Cross-Training + Strength Training" },
+                thursday: { type: "easy", description: "Easy Run recovery pace" },
+                friday: { type: "rest", description: "REST DAY or easy yoga" },
+                saturday: { type: "medium", description: "Medium-Long Run" },
+                sunday: { type: "long", description: "Long Run with fueling practice" }
+            },
+            speedStrength: {
+                monday: { type: "easy", description: "Easy Run recovery pace" },
+                tuesday: { type: "hills", description: "Hill Repeats" },
+                wednesday: { type: "easy", description: "Easy Run + Strength Training" },
+                thursday: { type: "tempo", description: "Tempo Run" },
+                friday: { type: "rest", description: "REST DAY or cross-training" },
+                saturday: { type: "easy", description: "Easy Run" },
+                sunday: { type: "long", description: "Long Run with marathon pace segments" }
+            },
+            taper: {
+                monday: { type: "rest", description: "REST DAY or light stretching" },
+                tuesday: { type: "easy", description: "Easy Run with strides" },
+                wednesday: { type: "rest", description: "REST DAY or easy walk" },
+                thursday: { type: "easy", description: "Easy Run with strides" },
+                friday: { type: "rest", description: "REST DAY" },
+                saturday: { type: "easy", description: "Very easy short run OR REST" },
+                sunday: { type: "race", description: "RACE DAY!" }
+            }
+        };
+
+        function App() {
+            const [currentView, setCurrentView] = useState('today');
+            const [startDate, setStartDate] = useState(() => {
+                const saved = localStorage.getItem('startDate');
+                return saved || '2025-11-01';
+            });
+            const [todayCheckin, setTodayCheckin] = useState({
+                sleepScore: 7,
+                readiness: 7,
+                restingHR: 60,
+                soreness: 3,
+                motivation: 8,
+                notes: ''
+            });
+            const [workoutLog, setWorkoutLog] = useState(() => {
+                const saved = localStorage.getItem('workoutLog');
+                return saved ? JSON.parse(saved) : {};
+            });
+            const [showCheckinForm, setShowCheckinForm] = useState(false);
+
+            useEffect(() => {
+                localStorage.setItem('startDate', startDate);
+            }, [startDate]);
+
+            useEffect(() => {
+                localStorage.setItem('workoutLog', JSON.stringify(workoutLog));
+            }, [workoutLog]);
+
+            const today = new Date();
+            const programStart = new Date(startDate);
+            const daysSinceStart = Math.floor((today - programStart) / (1000 * 60 * 60 * 24));
+            const currentWeek = Math.floor(daysSinceStart / 7) + 1;
+            const currentDayOfWeek = today.getDay();
+
+            const getCurrentPhase = () => {
+                for (let phase of TRAINING_PROGRAM.phases) {
+                    if (currentWeek >= phase.startWeek && currentWeek <= phase.endWeek) {
+                        return phase;
+                    }
+                }
+                return TRAINING_PROGRAM.phases[0];
+            };
+
+            const getCurrentWeekData = () => {
+                const phase = getCurrentPhase();
+                const weekData = phase.weeks.find(w => w.week === currentWeek);
+                return weekData || phase.weeks[0];
+            };
+
+            const getWorkoutTemplate = () => {
+                const phase = getCurrentPhase();
+                if (phase.name === "Base Building") return WORKOUT_TEMPLATES.baseBuilding;
+                if (phase.name === "Endurance Building") return WORKOUT_TEMPLATES.enduranceBuilding;
+                if (phase.name === "Speed and Strength") return WORKOUT_TEMPLATES.speedStrength;
+                return WORKOUT_TEMPLATES.taper;
+            };
+
+            const getTodayWorkout = () => {
+                const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+                const dayName = days[currentDayOfWeek];
+                const template = getWorkoutTemplate();
+                return { ...template[dayName], day: dayName };
+            };
+
+            const adjustWorkout = (workout, checkin) => {
+                const readinessScore = (checkin.sleepScore + checkin.readiness + (10 - checkin.soreness) + checkin.motivation) / 4;
+                
+                if (readinessScore < 5) {
+                    return {
+                        ...workout,
+                        adjustment: "🔴 Take it easy today",
+                        recommendation: "Your body needs more recovery. Consider taking a rest day or doing very light activity.",
+                        intensity: 0.5
+                    };
+                } else if (readinessScore < 6.5) {
+                    return {
+                        ...workout,
+                        adjustment: "🟡 Reduce intensity",
+                        recommendation: "Scale back today's workout by 25-30%. Focus on easy effort and listen to your body.",
+                        intensity: 0.7
+                    };
+                } else if (readinessScore > 8.5) {
+                    return {
+                        ...workout,
+                        adjustment: "🟢 You're ready!",
+                        recommendation: "Great readiness! Execute the planned workout as intended.",
+                        intensity: 1.0
+                    };
+                } else {
+                    return {
+                        ...workout,
+                        adjustment: "🟢 Proceed as planned",
+                        recommendation: "Good readiness. Stick to the planned workout.",
+                        intensity: 0.9
+                    };
+                }
+            };
+
+            const calculateMileage = (workout, weekData, adjustment) => {
+                const baseRuns = {
+                    easy: Math.floor(weekData.totalMiles * 0.15),
+                    moderate: Math.floor(weekData.totalMiles * 0.20),
+                    medium: Math.floor(weekData.totalMiles * 0.25),
+                    long: weekData.longRun,
+                    tempo: Math.floor(weekData.totalMiles * 0.18),
+                    hills: Math.floor(weekData.totalMiles * 0.15)
+                };
+                
+                const baseMiles = baseRuns[workout.type] || 0;
+                return Math.max(1, Math.floor(baseMiles * adjustment.intensity));
+            };
+
+            const logWorkout = (date, workout, completed, actualMiles, notes) => {
+                const dateStr = date.toISOString().split('T')[0];
+                setWorkoutLog(prev => ({
+                    ...prev,
+                    [dateStr]: {
+                        workout,
+                        completed,
+                        actualMiles,
+                        notes,
+                        checkin: todayCheckin
+                    }
+                }));
+            };
+
+            const getTodayLog = () => {
+                const dateStr = today.toISOString().split('T')[0];
+                return workoutLog[dateStr];
+            };
+
+            const getCompletedWorkouts = () => {
+                return Object.values(workoutLog).filter(log => log.completed).length;
+            };
+
+            const getTotalMiles = () => {
+                return Object.values(workoutLog).reduce((sum, log) => sum + (log.actualMiles || 0), 0);
+            };
+
+            // Views
+            const TodayView = () => {
+                const phase = getCurrentPhase();
+                const weekData = getCurrentWeekData();
+                const workout = getTodayWorkout();
+                const todayLog = getTodayLog();
+                const [showCompleteForm, setShowCompleteForm] = useState(false);
+                const [completedMiles, setCompletedMiles] = useState('');
+                const [workoutNotes, setWorkoutNotes] = useState('');
+
+                const adjustedWorkout = useMemo(() => 
+                    adjustWorkout(workout, todayCheckin), 
+                    [workout, todayCheckin]
+                );
+
+                const recommendedMiles = calculateMileage(workout, weekData, adjustedWorkout);
+
+                const handleCompleteWorkout = () => {
+                    logWorkout(
+                        today,
+                        workout.type,
+                        true,
+                        parseFloat(completedMiles) || recommendedMiles,
+                        workoutNotes
+                    );
+                    setShowCompleteForm(false);
+                    setCompletedMiles('');
+                    setWorkoutNotes('');
+                };
+
+                if (todayLog?.completed) {
+                    return (
+                        <div className="fade-in">
+                            <div className="card" style={{background: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)', color: 'white'}}>
+                                <div className="card-title" style={{color: 'white'}}>
+                                    ✅ Workout Completed!
+                                </div>
+                                <div className="workout-details">
+                                    <strong>{workout.description}</strong>
+                                    <br/>
+                                    Distance: {todayLog.actualMiles} miles
+                                    {todayLog.notes && <><br/>Notes: {todayLog.notes}</>}
+                                </div>
+                                <button className="btn btn-secondary" onClick={() => {
+                                    const dateStr = today.toISOString().split('T')[0];
+                                    const newLog = {...workoutLog};
+                                    delete newLog[dateStr];
+                                    setWorkoutLog(newLog);
+                                }}>
+                                    Undo Completion
+                                </button>
+                            </div>
+                        </div>
+                    );
+                }
+
+                return (
+                    <div className="fade-in">
+                        <div className="card">
+                            <div className="card-title">
+                                📅 Today's Overview
+                            </div>
+                            <div style={{fontSize: '14px', color: '#666', marginBottom: '15px'}}>
+                                {today.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                            </div>
+                            <div className="stats-grid">
+                                <div className="stat-box">
+                                    <div className="stat-value">{currentWeek}/52</div>
+                                    <div className="stat-label">Week</div>
+                                </div>
+                                <div className="stat-box">
+                                    <div className="stat-value">{phase.name.split(' ')[0]}</div>
+                                    <div className="stat-label">Phase</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {!showCheckinForm ? (
+                            <>
+                                <div className="alert alert-info">
+                                    💡 Check in with your body first to get personalized workout recommendations
+                                </div>
+                                <button className="btn btn-primary" onClick={() => setShowCheckinForm(true)}>
+                                    Start Daily Check-In
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <div className="card">
+                                    <div className="card-title">
+                                        🎯 Daily Check-In
+                                    </div>
+                                    
+                                    <div className="form-group">
+                                        <label>Sleep Quality (1-10)</label>
+                                        <input 
+                                            type="range" 
+                                            min="1" 
+                                            max="10" 
+                                            value={todayCheckin.sleepScore}
+                                            onChange={(e) => setTodayCheckin({...todayCheckin, sleepScore: parseInt(e.target.value)})}
+                                            className="input-range"
+                                        />
+                                        <div className="range-value">
+                                            <span>Poor</span>
+                                            <span className="current-value">{todayCheckin.sleepScore}</span>
+                                            <span>Excellent</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>Training Readiness (1-10)</label>
+                                        <input 
+                                            type="range" 
+                                            min="1" 
+                                            max="10" 
+                                            value={todayCheckin.readiness}
+                                            onChange={(e) => setTodayCheckin({...todayCheckin, readiness: parseInt(e.target.value)})}
+                                            className="input-range"
+                                        />
+                                        <div className="range-value">
+                                            <span>Not Ready</span>
+                                            <span className="current-value">{todayCheckin.readiness}</span>
+                                            <span>Very Ready</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>Resting Heart Rate (BPM)</label>
+                                        <input 
+                                            type="number" 
+                                            value={todayCheckin.restingHR}
+                                            onChange={(e) => setTodayCheckin({...todayCheckin, restingHR: parseInt(e.target.value)})}
+                                            className="input-text"
+                                            placeholder="60"
+                                        />
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>Muscle Soreness (1-10)</label>
+                                        <input 
+                                            type="range" 
+                                            min="1" 
+                                            max="10" 
+                                            value={todayCheckin.soreness}
+                                            onChange={(e) => setTodayCheckin({...todayCheckin, soreness: parseInt(e.target.value)})}
+                                            className="input-range"
+                                        />
+                                        <div className="range-value">
+                                            <span>No Soreness</span>
+                                            <span className="current-value">{todayCheckin.soreness}</span>
+                                            <span>Very Sore</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>Motivation Level (1-10)</label>
+                                        <input 
+                                            type="range" 
+                                            min="1" 
+                                            max="10" 
+                                            value={todayCheckin.motivation}
+                                            onChange={(e) => setTodayCheckin({...todayCheckin, motivation: parseInt(e.target.value)})}
+                                            className="input-range"
+                                        />
+                                        <div className="range-value">
+                                            <span>Low</span>
+                                            <span className="current-value">{todayCheckin.motivation}</span>
+                                            <span>High</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label>Notes (Optional)</label>
+                                        <input 
+                                            type="text"
+                                            value={todayCheckin.notes}
+                                            onChange={(e) => setTodayCheckin({...todayCheckin, notes: e.target.value})}
+                                            className="input-text"
+                                            placeholder="Any aches, pains, or concerns?"
+                                        />
+                                    </div>
+
+                                    <button className="btn btn-primary" onClick={() => setShowCheckinForm(false)}>
+                                        Get My Workout Recommendation
+                                    </button>
+                                </div>
+                            </>
+                        )}
+
+                        {!showCheckinForm && (
+                            <>
+                                <div className="workout-card">
+                                    <div className="workout-title">
+                                        {workout.type === 'rest' ? '😴' : '🏃‍♂️'} {workout.description}
+                                    </div>
+                                    {workout.type !== 'rest' && (
+                                        <div className="workout-details">
+                                            Recommended Distance: <strong>{recommendedMiles} miles</strong>
+                                            {workout.type === 'long' && (
+                                                <><br/>Long Run Day - Practice your fueling and hydration!</>
+                                            )}
+                                            {workout.type === 'tempo' && (
+                                                <><br/>1 mi warm-up, {Math.floor(recommendedMiles * 0.6)} mi tempo pace, 1 mi cool-down</>
+                                            )}
+                                            {workout.type === 'hills' && (
+                                                <><br/>1 mi warm-up, 8-10 × 90 sec uphill, jog down recovery, 1 mi cool-down</>
+                                            )}
+                                        </div>
+                                    )}
+                                    <div className="adjustment-badge">
+                                        {adjustedWorkout.adjustment}
+                                    </div>
+                                    <div className="workout-tips">
+                                        💡 {adjustedWorkout.recommendation}
+                                    </div>
+                                </div>
+
+                                {weekData.recovery && (
+                                    <div className="alert alert-warning">
+                                        ⚠️ This is a recovery week. Reduce overall intensity and listen to your body.
+                                    </div>
+                                )}
+
+                                {!showCompleteForm ? (
+                                    <button className="btn btn-primary" onClick={() => setShowCompleteForm(true)}>
+                                        Mark Workout as Complete
+                                    </button>
+                                ) : (
+                                    <div className="card">
+                                        <div className="card-title">Complete Workout</div>
+                                        <div className="form-group">
+                                            <label>Actual Miles Completed</label>
+                                            <input 
+                                                type="number"
+                                                step="0.1"
+                                                value={completedMiles}
+                                                onChange={(e) => setCompletedMiles(e.target.value)}
+                                                className="input-text"
+                                                placeholder={recommendedMiles.toString()}
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <label>Workout Notes (Optional)</label>
+                                            <input 
+                                                type="text"
+                                                value={workoutNotes}
+                                                onChange={(e) => setWorkoutNotes(e.target.value)}
+                                                className="input-text"
+                                                placeholder="How did it feel?"
+                                            />
+                                        </div>
+                                        <button className="btn btn-primary" onClick={handleCompleteWorkout}>
+                                            ✓ Complete Workout
+                                        </button>
+                                        <button className="btn btn-secondary" onClick={() => setShowCompleteForm(false)}>
+                                            Cancel
+                                        </button>
+                                    </div>
+                                )}
+                            </>
+                        )}
+                    </div>
+                );
+            };
+
+            const ProgressView = () => {
+                const phase = getCurrentPhase();
+                const weekData = getCurrentWeekData();
+                const completedWorkouts = getCompletedWorkouts();
+                const totalMiles = getTotalMiles();
+                const progressPercent = Math.min(100, (currentWeek / 52) * 100);
+
+                return (
+                    <div className="fade-in">
+                        <div className="card">
+                            <div className="card-title">
+                                📈 Your Progress
+                            </div>
+                            <div className="stats-grid">
+                                <div className="stat-box">
+                                    <div className="stat-value">{currentWeek}</div>
+                                    <div className="stat-label">Current Week</div>
+                                </div>
+                                <div className="stat-box">
+                                    <div className="stat-value">{completedWorkouts}</div>
+                                    <div className="stat-label">Workouts Done</div>
+                                </div>
+                                <div className="stat-box">
+                                    <div className="stat-value">{totalMiles.toFixed(1)}</div>
+                                    <div className="stat-label">Total Miles</div>
+                                </div>
+                                <div className="stat-box">
+                                    <div className="stat-value">{weekData.totalMiles}</div>
+                                    <div className="stat-label">Week Target</div>
+                                </div>
+                            </div>
+                            <div style={{marginTop: '20px'}}>
+                                <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '5px'}}>
+                                    <span style={{fontSize: '14px', fontWeight: '600'}}>Program Progress</span>
+                                    <span style={{fontSize: '14px', fontWeight: '600', color: '#2E5090'}}>{progressPercent.toFixed(0)}%</span>
+                                </div>
+                                <div className="progress-bar">
+                                    <div className="progress-fill" style={{width: `${progressPercent}%`}}></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="card">
+                            <div className="card-title">
+                                🎯 Current Phase: {phase.name}
+                            </div>
+                            <p style={{marginBottom: '15px', color: '#666'}}>
+                                Week {currentWeek} of 52
+                            </p>
+                            <div style={{background: '#f5f7fa', padding: '15px', borderRadius: '10px'}}>
+                                <div style={{marginBottom: '10px'}}>
+                                    <strong>This Week's Goals:</strong>
+                                </div>
+                                <div style={{fontSize: '14px', color: '#666'}}>
+                                    • Long Run: {weekData.longRun} miles<br/>
+                                    • Total Weekly Mileage: {weekData.totalMiles} miles<br/>
+                                    {weekData.recovery && '• Recovery Week - Focus on rest and easy efforts'}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="card">
+                            <div className="card-title">
+                                📊 Phase Breakdown
+                            </div>
+                            {TRAINING_PROGRAM.phases.map((p, idx) => {
+                                const isActive = p.name === phase.name;
+                                const isPast = currentWeek > p.endWeek;
+                                return (
+                                    <div key={idx} style={{
+                                        padding: '12px',
+                                        marginBottom: '10px',
+                                        borderRadius: '8px',
+                                        background: isActive ? 'linear-gradient(135deg, #2E5090 0%, #4472C4 100%)' : isPast ? '#e8f5e9' : '#f5f5f5',
+                                        color: isActive ? 'white' : '#333'
+                                    }}>
+                                        <div style={{fontWeight: '600', marginBottom: '5px'}}>
+                                            {isActive && '→ '}{p.name}
+                                        </div>
+                                        <div style={{fontSize: '13px', opacity: 0.9}}>
+                                            Weeks {p.startWeek}-{p.endWeek}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                );
+            };
+
+            const CalendarView = () => {
+                const logs = Object.entries(workoutLog).sort(([a], [b]) => new Date(b) - new Date(a)).slice(0, 30);
+
+                return (
+                    <div className="fade-in">
+                        <div className="card">
+                            <div className="card-title">
+                                📅 Recent Workouts
+                            </div>
+                            {logs.length === 0 ? (
+                                <p style={{color: '#666', textAlign: 'center', padding: '20px'}}>
+                                    No workouts logged yet. Complete your first workout today!
+                                </p>
+                            ) : (
+                                logs.map(([date, log]) => (
+                                    <div key={date} className="log-entry">
+                                        <div className="log-date">
+                                            {new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                                        </div>
+                                        <div className="log-details">
+                                            <strong>{log.workout}</strong> - {log.actualMiles} miles
+                                            {log.completed ? ' ✓' : ' ✗'}
+                                            {log.notes && <><br/><em>{log.notes}</em></>}
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+
+                        <div className="card">
+                            <div className="card-title">
+                                ⚙️ Settings
+                            </div>
+                            <div className="form-group">
+                                <label>Program Start Date</label>
+                                <input 
+                                    type="date"
+                                    value={startDate}
+                                    onChange={(e) => setStartDate(e.target.value)}
+                                    className="input-text"
+                                />
+                                <div style={{fontSize: '12px', color: '#666', marginTop: '5px'}}>
+                                    Adjust if you started training on a different date
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                );
+            };
+
+            return (
+                <div className="app-container">
+                    <div className="header">
+                        <h1>🏃‍♂️ Marathon Trainer</h1>
+                        <div className="week-info">
+                            Week {currentWeek} • {getCurrentPhase().name}
+                            <span className="phase-badge">Day {daysSinceStart + 1}</span>
+                        </div>
+                    </div>
+
+                    <div className="content">
+                        {currentView === 'today' && <TodayView />}
+                        {currentView === 'progress' && <ProgressView />}
+                        {currentView === 'calendar' && <CalendarView />}
+                    </div>
+
+                    <div className="nav-bar">
+                        <button 
+                            className={`nav-item ${currentView === 'today' ? 'active' : ''}`}
+                            onClick={() => setCurrentView('today')}
+                        >
+                            <div className="nav-icon">🏃</div>
+                            <div>Today</div>
+                        </button>
+                        <button 
+                            className={`nav-item ${currentView === 'progress' ? 'active' : ''}`}
+                            onClick={() => setCurrentView('progress')}
+                        >
+                            <div className="nav-icon">📈</div>
+                            <div>Progress</div>
+                        </button>
+                        <button 
+                            className={`nav-item ${currentView === 'calendar' ? 'active' : ''}`}
+                            onClick={() => setCurrentView('calendar')}
+                        >
+                            <div className="nav-icon">📅</div>
+                            <div>History</div>
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                const swCode = `
+                    self.addEventListener('install', (e) => {
+                        e.waitUntil(
+                            caches.open('marathon-v1').then((cache) => {
+                                return cache.addAll(['/']);
+                            })
+                        );
+                    });
+                    
+                    self.addEventListener('fetch', (e) => {
+                        e.respondWith(
+                            caches.match(e.request).then((response) => {
+                                return response || fetch(e.request);
+                            })
+                        );
+                    });
+                `;
+                
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                
+                navigator.serviceWorker.register(swUrl)
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed'));
+            });
+        }
+
+        // Render App
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
