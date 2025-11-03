@@ -538,11 +538,11 @@
                 return saved || '2025-11-01';
             });
             const [todayCheckin, setTodayCheckin] = useState({
-                sleepScore: 7,
-                readiness: 7,
+                sleepScore: 70,
+                readiness: 70,
                 restingHR: 60,
-                soreness: 3,
-                motivation: 8,
+                soreness: 30,
+                motivation: 80,
                 notes: ''
             });
             const [workoutLog, setWorkoutLog] = useState(() => {
@@ -596,23 +596,26 @@
             };
 
             const adjustWorkout = (workout, checkin) => {
-                const readinessScore = (checkin.sleepScore + checkin.readiness + (10 - checkin.soreness) + checkin.motivation) / 4;
+                // Calculate readiness score (all on 1-100 scale now)
+                // Sleep, readiness, motivation are positive (higher is better)
+                // Soreness is inverted (lower is better, so we use 100 - soreness)
+                const readinessScore = (checkin.sleepScore + checkin.readiness + (100 - checkin.soreness) + checkin.motivation) / 4;
                 
-                if (readinessScore < 5) {
+                if (readinessScore < 50) {
                     return {
                         ...workout,
                         adjustment: "🔴 Take it easy today",
                         recommendation: "Your body needs more recovery. Consider taking a rest day or doing very light activity.",
                         intensity: 0.5
                     };
-                } else if (readinessScore < 6.5) {
+                } else if (readinessScore < 65) {
                     return {
                         ...workout,
                         adjustment: "🟡 Reduce intensity",
                         recommendation: "Scale back today's workout by 25-30%. Focus on easy effort and listen to your body.",
                         intensity: 0.7
                     };
-                } else if (readinessScore > 8.5) {
+                } else if (readinessScore > 85) {
                     return {
                         ...workout,
                         adjustment: "🟢 You're ready!",
@@ -764,36 +767,36 @@
                                     </div>
                                     
                                     <div className="form-group">
-                                        <label>Sleep Quality (1-10)</label>
+                                        <label>Sleep Quality (1-100)</label>
                                         <input 
                                             type="range" 
                                             min="1" 
-                                            max="10" 
+                                            max="100" 
                                             value={todayCheckin.sleepScore}
                                             onChange={(e) => setTodayCheckin({...todayCheckin, sleepScore: parseInt(e.target.value)})}
                                             className="input-range"
                                         />
                                         <div className="range-value">
-                                            <span>Poor</span>
+                                            <span>Poor (1)</span>
                                             <span className="current-value">{todayCheckin.sleepScore}</span>
-                                            <span>Excellent</span>
+                                            <span>Excellent (100)</span>
                                         </div>
                                     </div>
 
                                     <div className="form-group">
-                                        <label>Training Readiness (1-10)</label>
+                                        <label>Training Readiness (1-100)</label>
                                         <input 
                                             type="range" 
                                             min="1" 
-                                            max="10" 
+                                            max="100" 
                                             value={todayCheckin.readiness}
                                             onChange={(e) => setTodayCheckin({...todayCheckin, readiness: parseInt(e.target.value)})}
                                             className="input-range"
                                         />
                                         <div className="range-value">
-                                            <span>Not Ready</span>
+                                            <span>Not Ready (1)</span>
                                             <span className="current-value">{todayCheckin.readiness}</span>
-                                            <span>Very Ready</span>
+                                            <span>Very Ready (100)</span>
                                         </div>
                                     </div>
 
@@ -809,36 +812,36 @@
                                     </div>
 
                                     <div className="form-group">
-                                        <label>Muscle Soreness (1-10)</label>
+                                        <label>Muscle Soreness (1-100)</label>
                                         <input 
                                             type="range" 
                                             min="1" 
-                                            max="10" 
+                                            max="100" 
                                             value={todayCheckin.soreness}
                                             onChange={(e) => setTodayCheckin({...todayCheckin, soreness: parseInt(e.target.value)})}
                                             className="input-range"
                                         />
                                         <div className="range-value">
-                                            <span>No Soreness</span>
+                                            <span>No Soreness (1)</span>
                                             <span className="current-value">{todayCheckin.soreness}</span>
-                                            <span>Very Sore</span>
+                                            <span>Very Sore (100)</span>
                                         </div>
                                     </div>
 
                                     <div className="form-group">
-                                        <label>Motivation Level (1-10)</label>
+                                        <label>Motivation Level (1-100)</label>
                                         <input 
                                             type="range" 
                                             min="1" 
-                                            max="10" 
+                                            max="100" 
                                             value={todayCheckin.motivation}
                                             onChange={(e) => setTodayCheckin({...todayCheckin, motivation: parseInt(e.target.value)})}
                                             className="input-range"
                                         />
                                         <div className="range-value">
-                                            <span>Low</span>
+                                            <span>Low (1)</span>
                                             <span className="current-value">{todayCheckin.motivation}</span>
-                                            <span>High</span>
+                                            <span>High (100)</span>
                                         </div>
                                     </div>
 
@@ -895,7 +898,10 @@
                                 )}
 
                                 {!showCompleteForm ? (
-                                    <button className="btn btn-primary" onClick={() => setShowCompleteForm(true)}>
+                                    <button className="btn btn-primary" onClick={() => {
+                                        setShowCompleteForm(true);
+                                        setCompletedMiles(recommendedMiles.toString());
+                                    }}>
                                         Mark Workout as Complete
                                     </button>
                                 ) : (
@@ -903,6 +909,9 @@
                                         <div className="card-title">Complete Workout</div>
                                         <div className="form-group">
                                             <label>Actual Miles Completed</label>
+                                            <div style={{fontSize: '13px', color: '#666', marginBottom: '8px'}}>
+                                                Recommended: {recommendedMiles} miles (you can edit this)
+                                            </div>
                                             <input 
                                                 type="number"
                                                 step="0.1"
