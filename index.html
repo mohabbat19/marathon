@@ -83,67 +83,184 @@
         .form-group label {
             display: block;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
             color: #333;
+            margin-bottom: 12px;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            width: 100%;
             margin-bottom: 8px;
+        }
+
+        .slider-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 10px;
+            background: linear-gradient(90deg, #2E5090 0%, #4472C4 100%);
+            border-radius: 5px;
+            pointer-events: none;
+            transition: width 0.1s ease;
         }
 
         .input-range {
             width: 100%;
-            height: 8px;
+            height: 10px;
             border-radius: 5px;
             outline: none;
             -webkit-appearance: none;
-            background: #e0e0e0;
+            background: linear-gradient(to right, #e0e0e0 0%, #e0e0e0 100%);
+            cursor: pointer;
+            transition: all 0.1s ease;
+            touch-action: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .input-range:active {
+            cursor: grabbing;
         }
 
         .input-range::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            background: #2E5090;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, #2E5090 0%, #4472C4 100%);
+            cursor: grab;
+            box-shadow: 0 3px 8px rgba(46, 80, 144, 0.4);
+            border: 3px solid white;
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .input-range::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 12px rgba(46, 80, 144, 0.6);
+        }
+
+        .input-range::-webkit-slider-thumb:active {
+            cursor: grabbing;
+            transform: scale(1.05);
         }
 
         .input-range::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            background: #2E5090;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, #2E5090 0%, #4472C4 100%);
+            cursor: grab;
+            border: 3px solid white;
+            box-shadow: 0 3px 8px rgba(46, 80, 144, 0.4);
+            transition: all 0.2s ease;
+        }
+
+        .input-range::-moz-range-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 4px 12px rgba(46, 80, 144, 0.6);
+        }
+
+        .input-range::-moz-range-thumb:active {
+            cursor: grabbing;
+            transform: scale(1.05);
+        }
+
+        /* Track fill effect */
+        .input-range::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+        }
+
+        .input-range::-moz-range-track {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            background: #e0e0e0;
+        }
+
+        .input-range::-moz-range-progress {
+            background: linear-gradient(90deg, #2E5090 0%, #4472C4 100%);
+            height: 10px;
+            border-radius: 5px;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .input-range {
+                height: 12px;
+            }
+
+            .input-range::-webkit-slider-thumb {
+                width: 32px;
+                height: 32px;
+            }
+
+            .input-range::-moz-range-thumb {
+                width: 32px;
+                height: 32px;
+            }
+
+            .slider-wrapper {
+                padding: 8px 0;
+            }
         }
 
         .range-value {
             display: flex;
             justify-content: space-between;
-            margin-top: 5px;
-            font-size: 12px;
+            align-items: center;
+            margin-top: 8px;
+            font-size: 13px;
             color: #666;
         }
 
         .current-value {
-            font-weight: 600;
+            font-weight: 700;
             color: #2E5090;
-            font-size: 18px;
+            font-size: 24px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8f0fe 100%);
+            padding: 8px 16px;
+            border-radius: 12px;
+            min-width: 60px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(46, 80, 144, 0.15);
         }
 
         .input-text {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 16px;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
         }
 
         .input-text:focus {
             outline: none;
             border-color: #2E5090;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(46, 80, 144, 0.1);
+        }
+
+        .input-text:hover {
+            border-color: #4472C4;
+            background: white;
+        }
+
+        /* Remove number input spinners for cleaner look */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
         }
 
         .btn {
@@ -405,6 +522,33 @@
 
     <script type="text/babel">
         const { useState, useEffect, useMemo } = React;
+
+        // Custom Slider Component
+        const SliderInput = ({ label, value, onChange, min = 1, max = 100, minLabel, maxLabel }) => {
+            const fillPercentage = ((value - min) / (max - min)) * 100;
+            
+            return (
+                <div className="form-group">
+                    <label>{label}</label>
+                    <div className="slider-wrapper">
+                        <div className="slider-fill" style={{ width: `${fillPercentage}%` }}></div>
+                        <input 
+                            type="range" 
+                            min={min}
+                            max={max}
+                            value={value}
+                            onChange={onChange}
+                            className="input-range"
+                        />
+                    </div>
+                    <div className="range-value">
+                        <span>{minLabel}</span>
+                        <span className="current-value">{value}</span>
+                        <span>{maxLabel}</span>
+                    </div>
+                </div>
+            );
+        };
 
         // Training program data
         const TRAINING_PROGRAM = {
@@ -766,84 +910,67 @@
                                         🎯 Daily Check-In
                                     </div>
                                     
-                                    <div className="form-group">
-                                        <label>Sleep Quality (1-100)</label>
-                                        <input 
-                                            type="range" 
-                                            min="1" 
-                                            max="100" 
-                                            value={todayCheckin.sleepScore}
-                                            onChange={(e) => setTodayCheckin({...todayCheckin, sleepScore: parseInt(e.target.value)})}
-                                            className="input-range"
-                                        />
-                                        <div className="range-value">
-                                            <span>Poor (1)</span>
-                                            <span className="current-value">{todayCheckin.sleepScore}</span>
-                                            <span>Excellent (100)</span>
-                                        </div>
-                                    </div>
+                                    <SliderInput
+                                        label="Sleep Quality (1-100)"
+                                        value={todayCheckin.sleepScore}
+                                        onChange={(e) => setTodayCheckin({...todayCheckin, sleepScore: parseInt(e.target.value)})}
+                                        min={1}
+                                        max={100}
+                                        minLabel="Poor (1)"
+                                        maxLabel="Excellent (100)"
+                                    />
 
-                                    <div className="form-group">
-                                        <label>Training Readiness (1-100)</label>
-                                        <input 
-                                            type="range" 
-                                            min="1" 
-                                            max="100" 
-                                            value={todayCheckin.readiness}
-                                            onChange={(e) => setTodayCheckin({...todayCheckin, readiness: parseInt(e.target.value)})}
-                                            className="input-range"
-                                        />
-                                        <div className="range-value">
-                                            <span>Not Ready (1)</span>
-                                            <span className="current-value">{todayCheckin.readiness}</span>
-                                            <span>Very Ready (100)</span>
-                                        </div>
-                                    </div>
+                                    <SliderInput
+                                        label="Training Readiness (1-100)"
+                                        value={todayCheckin.readiness}
+                                        onChange={(e) => setTodayCheckin({...todayCheckin, readiness: parseInt(e.target.value)})}
+                                        min={1}
+                                        max={100}
+                                        minLabel="Not Ready (1)"
+                                        maxLabel="Very Ready (100)"
+                                    />
 
                                     <div className="form-group">
                                         <label>Resting Heart Rate (BPM)</label>
-                                        <input 
-                                            type="number" 
-                                            value={todayCheckin.restingHR}
-                                            onChange={(e) => setTodayCheckin({...todayCheckin, restingHR: parseInt(e.target.value)})}
-                                            className="input-text"
-                                            placeholder="60"
-                                        />
-                                    </div>
-
-                                    <div className="form-group">
-                                        <label>Muscle Soreness (1-100)</label>
-                                        <input 
-                                            type="range" 
-                                            min="1" 
-                                            max="100" 
-                                            value={todayCheckin.soreness}
-                                            onChange={(e) => setTodayCheckin({...todayCheckin, soreness: parseInt(e.target.value)})}
-                                            className="input-range"
-                                        />
-                                        <div className="range-value">
-                                            <span>No Soreness (1)</span>
-                                            <span className="current-value">{todayCheckin.soreness}</span>
-                                            <span>Very Sore (100)</span>
+                                        <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
+                                            <input 
+                                                type="number" 
+                                                value={todayCheckin.restingHR}
+                                                onChange={(e) => setTodayCheckin({...todayCheckin, restingHR: parseInt(e.target.value) || 0})}
+                                                className="input-text"
+                                                placeholder="Enter BPM (e.g., 60)"
+                                                min="30"
+                                                max="120"
+                                                inputMode="numeric"
+                                                pattern="[0-9]*"
+                                                style={{fontSize: '18px', fontWeight: '600', textAlign: 'center'}}
+                                            />
+                                            <span style={{fontSize: '16px', color: '#666', fontWeight: '600', minWidth: '50px'}}>BPM</span>
+                                        </div>
+                                        <div style={{fontSize: '12px', color: '#666', marginTop: '8px'}}>
+                                            Normal range: 40-100 BPM
                                         </div>
                                     </div>
 
-                                    <div className="form-group">
-                                        <label>Motivation Level (1-100)</label>
-                                        <input 
-                                            type="range" 
-                                            min="1" 
-                                            max="100" 
-                                            value={todayCheckin.motivation}
-                                            onChange={(e) => setTodayCheckin({...todayCheckin, motivation: parseInt(e.target.value)})}
-                                            className="input-range"
-                                        />
-                                        <div className="range-value">
-                                            <span>Low (1)</span>
-                                            <span className="current-value">{todayCheckin.motivation}</span>
-                                            <span>High (100)</span>
-                                        </div>
-                                    </div>
+                                    <SliderInput
+                                        label="Muscle Soreness (1-100)"
+                                        value={todayCheckin.soreness}
+                                        onChange={(e) => setTodayCheckin({...todayCheckin, soreness: parseInt(e.target.value)})}
+                                        min={1}
+                                        max={100}
+                                        minLabel="No Soreness (1)"
+                                        maxLabel="Very Sore (100)"
+                                    />
+
+                                    <SliderInput
+                                        label="Motivation Level (1-100)"
+                                        value={todayCheckin.motivation}
+                                        onChange={(e) => setTodayCheckin({...todayCheckin, motivation: parseInt(e.target.value)})}
+                                        min={1}
+                                        max={100}
+                                        minLabel="Low (1)"
+                                        maxLabel="High (100)"
+                                    />
 
                                     <div className="form-group">
                                         <label>Notes (Optional)</label>
@@ -919,6 +1046,8 @@
                                                 onChange={(e) => setCompletedMiles(e.target.value)}
                                                 className="input-text"
                                                 placeholder={recommendedMiles.toString()}
+                                                inputMode="decimal"
+                                                style={{fontSize: '18px', fontWeight: '600', textAlign: 'center'}}
                                             />
                                         </div>
                                         <div className="form-group">
